@@ -1,0 +1,39 @@
+{% extends 'base.html'%}
+
+{% load custom_filters %}
+
+{% load static %}
+{% block static_content %}
+<script src="{% static '/js/dropdown.js' %}"></script>
+<link rel="stylesheet" href="{% static '/css/dropdown.css' %}">
+<link rel="stylesheet" href="{% static '/css/shell.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- navbar -->
+<nav class="navbar">
+    <h1 class="comp-title">AGOL File Download</h1>
+    <!-- navbar items-->
+    <div class="navbar-links">
+        <ul>        
+            <li>
+                <!-- logout -->
+                <div class="dropdown">
+                    <div class="select">
+                        <span class="selected">{{user.get_name_formatted}}</span>
+                        <div class="caret"></div>
+                    </div>
+                    <ul class="menu">
+                        <!-- add href -->
+                        <li><a href="/login">Logout</a></li>
+                    </ul>
+                </div>
+                <!-- end of logout -->
+            </li>
+        </ul>
+    </div>
+</nav>
+{% endblock %}
+
+
+

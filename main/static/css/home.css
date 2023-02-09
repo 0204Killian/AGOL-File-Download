@@ -1,0 +1,16 @@
+:root {
+    /* global variables */
+    --entegro-pink-darker: rgba(136, 12, 95, 0.6);
+    --entegro-pink: #c51189;
+    --entegro-white: rgba(255,253,254,255);
+    --light-grey: rgb(240, 240, 240);
+    --darker-grey: rgb(230, 230, 230);
+}
+
+.input-form {
+    margin-top: 100px;
+    margin-left: 20px;
+    width: 400px;
+    background-color: var(--entegro-white);
+    border: .075rem solid black;
+}

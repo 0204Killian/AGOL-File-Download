@@ -1,0 +1,27 @@
+{% extends 'shell.html'%}
+{% load static %}
+
+{% block main %}
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static '/css/home.css' %}">
+  </head>
+<h1 hidden>{% block title %}Home{% endblock %}</h1>
+<div class="input-form">
+    <label for="filetype">Choose a file type: </label>
+    <select name="filetype" id="filetype" class="dropdownlist">
+        <option value="Unavailable">Unavailable</option>
+    </select><br>
+    <label for="folderselect">Select a folder: </label>
+    <select name="folderselect" id="folderselect" class="dropdownlist">
+        <option value="Unavailable">Unavailable</option>
+    </select><br>
+    <label for="featureselect">Select a feature: </label>
+    <select name="featureselect" id="featureselect" class="dropdownlist">
+        <option value="Unavailable">Unavailable</option>
+    </select><br>
+    <label for="sublayerselect">Select a sublayer: </label>
+    <select name="sublayerselect" id="sublayerselect" class="dropdownlist">
+        <option value="Unavailable">Unavailable</option>
+    </select><br>
+</div>
+{% endblock %}
