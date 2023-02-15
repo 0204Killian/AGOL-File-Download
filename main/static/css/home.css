@@ -7,15 +7,197 @@
     --darker-grey: rgb(230, 230, 230);
 }
 
+.form-container {
+    width: 36%;
+}
+
+/* form */
 .input-form {
-    margin-top: 100px;
-    margin-left: 20px;
-    width: 400px;
+    width: 100%;
+    margin: 1rem 0 0 1rem;
+    border: .05rem solid lightgray;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
     background-color: var(--entegro-white);
-    border: .075rem solid black;
+    box-shadow: 0 0 0.05em black;
+}
+
+.input-form * {
+    color: black;
+}
+
+.form-component {
+    display: flex;
+    align-items: center;
+}
+
+.form-component * {
+    margin: 1% auto;
+}
+
+.form-component label {
+    width: 36%;
+    padding: .75%;
+}
+
+.form-component select {
+    width: 57%;
+    background-color: var(--entegro-white);
+    border: .1em solid black;
+    padding: 1.5%;
+    border-radius: 0.5em;
+    box-sizing: content-box;
+}
+
+.form-component select:hover {
+    transition: .5s;
+    background-color: var(--light-grey);
+    cursor: pointer;
+}
+
+.form-component [for='attachmentcheck'] {
+    width: auto;
+    margin: 1%;
+}
+
+#attachmentcheckbx {
+    margin: auto 2.5%;
 }
 
 .download-button {
-    margin-left: 20px;
-    margin-top: 5px;
+    background-color: rgb(97, 97, 97);
+    color: white;
+    border-radius: 8px;
+    border: .1rem solid black;
+    display: block;
+    margin: 5% auto;
+}
+
+.download-button:hover {
+    transform: scale(1.02);
+    cursor: pointer;
+}
+
+input[type='checkbox']:hover {
+    transition: .25s;
+    transform: scale(1.02);
+    cursor: pointer;
+}
+
+/* font details */
+label {
+    font-size: .9rem;
+    font-weight: 500;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+select, option {
+    font-weight: 400;
+    font-family: sans-serif;
+    font-size: .85rem;
+}
+
+.download-button {
+    font-weight: 600;
+    font-family: sans-serif;
+    font-size: .9rem;
+}
+
+
+/* media queries */
+
+@media(max-width: 1075px) {
+    .form-container {
+        width: 42.5%;
+    }
+
+    label {
+        width: 40%;
+    }
+
+    select {
+        width: 53%;
+    }
+}
+
+@media (max-width: 950px) {
+    .form-container {
+        width: 45%;
+    } 
+
+    label, .download-button {
+        font-size: .8rem;
+    }
+
+    select, option {
+        font-weight: 400;
+        font-family: sans-serif;
+        font-size: .75rem;
+    }
+}
+
+@media (max-width: 800px) {
+    .form-container {
+        width: 50%;
+    } 
+
+    label, .download-button {
+        font-size: .75rem;
+    }
+
+    select, option {
+        font-weight: 400;
+        font-family: sans-serif;
+        font-size: .7rem;
+    }
+}
+
+
+@media (max-width: 650px) {
+    .form-container {
+        width: 60%;
+    } 
+
+    label, .download-button {
+        font-size: .7rem;
+    }
+
+    select, option {
+        font-weight: 400;
+        font-family: sans-serif;
+        font-size: .65rem;
+    }
+}
+
+@media (max-width: 500px) {
+    .form-container {
+        width: 67.5%;
+    } 
+
+    label, .download-button {
+        font-size: .6rem;
+    }
+
+    select, option {
+        font-weight: 400;
+        font-family: sans-serif;
+        font-size: .55rem;
+    }
+}
+
+@media (max-width: 395px) {
+    .form-container {
+        width: 80%;
+    }
+    label, .download-button {
+        font-size: .55rem;
+    }
+
+    select, option {
+        font-weight: 400;
+        font-family: sans-serif;
+        font-size: .5rem;
+    } 
 }
