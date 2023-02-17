@@ -8,6 +8,7 @@ from django.contrib.auth.models import Permission, Group
 from .models_validation import models_validation as mv
 from .model_exceptions import model_exceptions as me
 from .utils import utils as ut
+from .python_arc.arc_util import arcgis_listings
 
 class CustomAccountManager(BaseUserManager):
     def create_user(self, email, name, user_name, password, **other_fields):
@@ -145,4 +146,31 @@ class User(AbstractBaseUser, PermissionsMixin):
 
         return User.objects.extra(
             select={"lower_name": "lower(name)"}).order_by("lower_name")
-            
+
+class folders(models.Model):
+    title = models.CharField(max_length=150, null=False, unique=True)
+
+    def __str__(self):
+        return self.title
+
+    @staticmethod
+    def populate_folders():
+        folder_lists = arcgis_listings()
+        folder_listed = folder_lists.get_folders()
+        titles = []
+        for i in folder_listed:
+            titles.append(i['title'])
+        for title in titles:
+            Folder = folders(title=title)
+            if folders.objects.filter(title=title):
+                pass
+            else:
+                Folder.save()
+
+    def get_feature_names(self):
+        feature_listed = arcgis_listings()
+        feature_list = feature_listed.get_layers(self.title)
+        names = []
+        for i in feature_list:
+            names.append(i)
+        return names

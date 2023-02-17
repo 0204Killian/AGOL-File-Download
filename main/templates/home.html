@@ -1,32 +1,81 @@
 {% extends 'shell.html'%}
+{% block title %} Home {% endblock %}
+
 {% load static %}
+{% block static_content %}
+<script src="{% static '/js/dropdown.js' %}"></script>
+<link rel="stylesheet" href="{% static '/css/dropdown.css' %}">
+<link rel="stylesheet" href="{% static '/css/shell.css' %}">
+<link rel="stylesheet" href="{% static '/css/home.css' %}">
+{% endblock %}
 
 {% block main %}
-<head>
-    <link rel="stylesheet" type="text/css" href="{% static '/css/home.css' %}">
-  </head>
-<h1 hidden>{% block title %}Home{% endblock %}</h1>
-<div class="input-form">
-    <label for="filetype">Choose a file type: </label>
-    <select name="filetype" id="filetype" class="dropdownlist">
-        <option value="Unavailable">Unavailable</option>
-    </select><br>
-    <label for="folderselect">Select a folder: </label>
-    <select name="folderselect" id="folderselect" class="dropdownlist">
-        <option value="Unavailable">Unavailable</option>
-    </select><br>
-    <label for="featureselect">Select a feature: </label>
-    <select name="featureselect" id="featureselect" class="dropdownlist">
-        <option value="Unavailable">Unavailable</option>
-    </select><br>
-    <label for="sublayerselect">Select a sublayer: </label>
-    <select name="sublayerselect" id="sublayerselect" class="dropdownlist">
-        <option value="Unavailable">Unavailable</option>
-    </select><br>
-    <label for="attachmentcheck">Download Attachments: </label>
-    <input type="checkbox" id="attachmentcheckbx"><br>
-</div>
-<div class="download-button">
-    <button type="button">Download</button> 
-</div>
+<main>
+    <!-- added for styling purposes (reuse.css applies class main-header )-->
+    <h1 class="main-header">Download</h1>
+    <!-- added form container for better styling -->
+    <div class="form-container">
+        <!-- form -->
+        <div class="input-form">
+            <!-- added form component divs so I can group the label and inputs
+            when styling -->
+            <div class="form-component">
+                <label for="filetype">Choose a file type </label>
+                <select name="filetype" id="filetype" class="dropdownlist">
+                    <option class="dummy-option">File Type</option>
+                    <option value="Shapefile">Shapefile</option>
+                    <option value="Excelfile">Excel/CSV</option>
+                </select>
+            </div>
+            
+            <br/>
+
+            <div class="form-component">
+                <label for="folderselect">Select a folder </label>
+                <select name="folderselect" id="folderselect" class="dropdownlist" onchange="updateFeatureDropdown()">
+                    <option class="dummy-option">Folders</option>
+                    {% for folder in folders %}
+                        <option value="{{ folder.id }}">{{ folder }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <br/>
+
+            <div class="form-component">
+                <label for="featureselect">Select a feature </label>
+                <select name="featureselect" id="featureselect" class="dropdownlist">
+                    <option class="dummy-option">Features</option>
+                    {% for feature in features %}
+                        <option value="{{ feature }}">{{ feature }}</option>
+                    {% endfor %}
+                </select>
+                 
+            </div>
+
+            <br/>
+
+            <div class="form-component">
+                <label for="sublayerselect">Select a sublayer </label>
+                <select name="sublayerselect" id="sublayerselect" class="dropdownlist">
+                    <option value="Unavailable">Unavailable</option>
+                </select>           
+            </div>
+
+            <br/>
+
+            <div class="form-component">
+                <label for="attachmentcheck">Download Attachments </label>
+                <input type="checkbox" id="attachmentcheckbx">
+            </div>
+        </div>
+        <!-- end of form -->
+        <!-- need to get rid of the div the button was in so I could center the button -->
+        <!-- changed inner html to submit since the h1's inner HTML has Download-->
+        <button class="download-button" type="button">Download</button> 
+    </div>
+</main>
+
+<script src="{% static 'js/home.js' %}"></script>
+
 {% endblock %}

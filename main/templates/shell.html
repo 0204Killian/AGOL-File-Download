@@ -1,18 +1,20 @@
 {% extends 'base.html'%}
 
-{% load custom_filters %}
-
-{% load static %}
-{% block static_content %}
-<script src="{% static '/js/dropdown.js' %}"></script>
-<link rel="stylesheet" href="{% static '/css/dropdown.css' %}">
-<link rel="stylesheet" href="{% static '/css/shell.css' %}">
-{% endblock %}
+<!-- had to move static files to home -->
+<!-- for some reason if you redeclare a block in another file it
+won't use content from other block previously declared -->
 
 {% block content %}
 <!-- navbar -->
 <nav class="navbar">
     <h1 class="comp-title">AGOL File Download</h1>
+    <!-- added the below href -->
+    <!-- caret (shown on smaller screen sizes to toggle menu)-->
+    <a href="#" class="toggle-button">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </a>
     <!-- navbar items-->
     <div class="navbar-links">
         <ul>        
