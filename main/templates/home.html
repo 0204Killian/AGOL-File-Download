@@ -22,7 +22,9 @@
             <div class="form-component">
                 <label for="filetype">Choose a file type </label>
                 <select name="filetype" id="filetype" class="dropdownlist">
-                    <option value="Unavailable">Unavailable</option>
+                    <option class="dummy-option">File Type</option>
+                    <option value="Shapefile">Shapefile</option>
+                    <option value="Excelfile">Excel/CSV</option>
                 </select>
             </div>
             
@@ -30,8 +32,11 @@
 
             <div class="form-component">
                 <label for="folderselect">Select a folder </label>
-                <select name="folderselect" id="folderselect" class="dropdownlist">
-                    <option value="Unavailable">Unavailable</option>
+                <select name="folderselect" id="folderselect" class="dropdownlist" onchange="updateFeatureDropdown()">
+                    <option class="dummy-option">Folders</option>
+                    {% for folder in folders %}
+                        <option value="{{ folder.id }}">{{ folder }}</option>
+                    {% endfor %}
                 </select>
             </div>
 
@@ -40,10 +45,12 @@
             <div class="form-component">
                 <label for="featureselect">Select a feature </label>
                 <select name="featureselect" id="featureselect" class="dropdownlist">
-                    <option value="Unavailable">Unavailable</option>
-                    <option value="Unavailable">test</option>
-
-                </select>  
+                    <option class="dummy-option">Features</option>
+                    {% for feature in features %}
+                        <option value="{{ feature }}">{{ feature }}</option>
+                    {% endfor %}
+                </select>
+                 
             </div>
 
             <br/>
@@ -65,8 +72,10 @@
         <!-- end of form -->
         <!-- need to get rid of the div the button was in so I could center the button -->
         <!-- changed inner html to submit since the h1's inner HTML has Download-->
-        <button class="download-button" type="button">Submit</button> 
+        <button class="download-button" type="button">Download</button> 
     </div>
 </main>
+
+<script src="{% static 'js/home.js' %}"></script>
 
 {% endblock %}
