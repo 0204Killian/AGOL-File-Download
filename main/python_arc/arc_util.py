@@ -57,7 +57,7 @@ class arcgis_downloads:
         arc = arcgis_listings()
         feature_id = arc.get_feature_id(feature_title)
         root_dir = os.getcwd()
-        downloads_path = os.path.join(root_dir, "downloads")
+        downloads_path = os.path.join(root_dir, "main/static/downloads")
         o_items = self.gis.content.search(query=f'id: "{feature_id}"')
         for item in o_items:
             stitle = item.title
