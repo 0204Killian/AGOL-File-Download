@@ -54,7 +54,7 @@ async function download(){
         filename = filename.replace(/ /g,"_");
 
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', `/home/killian/Downloads/${filename}.zip`, true);
+        xhr.open('GET', `/${filename}.zip`, true);
         xhr.responseType = 'blob';
 
         xhr.onload = function(e) {

@@ -1,6 +1,7 @@
 from arcgis.gis import GIS
 from pathlib import Path
 import arcgis
+import os
 
 class arcgis_listings:
 
@@ -53,13 +54,10 @@ class arcgis_downloads:
     user = gis.users.get(username=username)
 
     def download_file(self, feature_title, sublayer, filetype):
-        print("HELLO")
-        print("____________________________")
-        print("____________________________")
-        print("____________________________")
         arc = arcgis_listings()
         feature_id = arc.get_feature_id(feature_title)
-        downloads_path = str(Path.home() / "Downloads")
+        root_dir = os.getcwd()
+        downloads_path = os.path.join(root_dir, "downloads")
         o_items = self.gis.content.search(query=f'id: "{feature_id}"')
         for item in o_items:
             stitle = item.title
