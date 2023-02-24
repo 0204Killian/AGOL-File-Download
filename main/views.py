@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import User, folders
 from django.http import JsonResponse
+from .python_arc.arc_util import arcgis_listings, arcgis_downloads
 import json
 
 @login_required
@@ -22,6 +23,18 @@ def get_features(request, folder_id):
     feature_names = folder.get_feature_names()
     context = {'features': feature_names}
     return JsonResponse(context)
+
+def get_sublayers(request, feature_title):
+    arc = arcgis_listings()
+    feature_id = arc.get_feature_id(feature_title)
+    sublayer_names = arc.get_sublayers_names(feature_id)
+    context = {'sublayers': sublayer_names}
+    return JsonResponse(context)
+
+def download(request, feature_title, sublayer, filetype):
+    arc = arcgis_downloads()
+    download_trigger = arc.download_file(feature_title, sublayer, filetype)
+    return HttpResponse("Success")
 
 def login_view(req):  
     """view for login page."""

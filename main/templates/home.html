@@ -22,9 +22,9 @@
             <div class="form-component">
                 <label for="filetype">Choose a file type </label>
                 <select name="filetype" id="filetype" class="dropdownlist">
-                    <option class="dummy-option">File Type</option>
+                    <option class="dummy-option" selected>File Type</option>
                     <option value="Shapefile">Shapefile</option>
-                    <option value="Excelfile">Excel/CSV</option>
+                    <option value="CSV">CSV</option>
                 </select>
             </div>
             
@@ -33,38 +33,37 @@
             <div class="form-component">
                 <label for="folderselect">Select a folder </label>
                 <select name="folderselect" id="folderselect" class="dropdownlist" onchange="updateFeatureDropdown()">
-                    <option class="dummy-option">Folders</option>
+                    <option class="dummy-option" selected>Folders</option>
                     {% for folder in folders %}
                         <option value="{{ folder.id }}">{{ folder }}</option>
                     {% endfor %}
                 </select>
             </div>
-
             <br/>
 
             <div class="form-component">
-                <label for="featureselect">Select a feature </label>
-                <select name="featureselect" id="featureselect" class="dropdownlist">
-                    <option class="dummy-option">Features</option>
+                <label for="featureselect">Select a layer </label>
+                <select name="featureselect" id="featureselect" class="dropdownlist" onchange="updateSublayerDropdown()">
+                    <option class="dummy-option">Layers</option>
                     {% for feature in features %}
                         <option value="{{ feature }}">{{ feature }}</option>
                     {% endfor %}
                 </select>
-                 
             </div>
-
             <br/>
-
             <div class="form-component">
                 <label for="sublayerselect">Select a sublayer </label>
                 <select name="sublayerselect" id="sublayerselect" class="dropdownlist">
-                    <option value="Unavailable">Unavailable</option>
+                    <option class="dummy-option">Sublayers</option>
+                    {% for sublayer in sublayers %}
+                        <option value="{{ sublayer }}">{{ sublayer }}</option>
+                    {% endfor %}
                 </select>           
             </div>
 
             <br/>
 
-            <div class="form-component">
+            <div class="form-component" hidden>
                 <label for="attachmentcheck">Download Attachments </label>
                 <input type="checkbox" id="attachmentcheckbx">
             </div>
@@ -72,7 +71,7 @@
         <!-- end of form -->
         <!-- need to get rid of the div the button was in so I could center the button -->
         <!-- changed inner html to submit since the h1's inner HTML has Download-->
-        <button class="download-button" type="button">Download</button> 
+        <button class="download-button" type="button" onclick="download()">Download</button> 
     </div>
 </main>
 
