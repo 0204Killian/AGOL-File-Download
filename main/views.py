@@ -34,7 +34,8 @@ def get_sublayers(request, feature_title):
 def download(request, feature_title, sublayer, filetype):
     arc = arcgis_downloads()
     download_trigger = arc.download_file(feature_title, sublayer, filetype)
-    return HttpResponse("Success")
+    response_data = {'download_trigger': download_trigger}
+    return HttpResponse(json.dumps(response_data), content_type='application/json')
 
 def login_view(req):  
     """view for login page."""

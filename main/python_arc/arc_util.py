@@ -46,7 +46,6 @@ class arcgis_listings:
         search_result = self.gis.content.search(query=f'title: "{feature_title}"')
         return search_result[0].id
 
-
 class arcgis_downloads:
     username = 'praveenmp'
     password = 'Kee0Phah'
@@ -54,12 +53,16 @@ class arcgis_downloads:
     user = gis.users.get(username=username)
 
     def download_file(self, feature_title, sublayer, filetype):
-
+        print("HELLO")
+        print("____________________________")
+        print("____________________________")
+        print("____________________________")
         arc = arcgis_listings()
         feature_id = arc.get_feature_id(feature_title)
         downloads_path = str(Path.home() / "Downloads")
         o_items = self.gis.content.search(query=f'id: "{feature_id}"')
         for item in o_items:
+            stitle = item.title
             result = item.export(f'{item.title}', filetype)
             result.download(save_path=downloads_path)
-        print("finished")
+        return stitle

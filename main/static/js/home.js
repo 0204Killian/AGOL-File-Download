@@ -42,17 +42,34 @@ function updateSublayerDropdown() {
 }
 
 async function download(){
-    alert("Running")
     let feature_id = document.getElementById("featureselect").value;
     let sublayer = document.getElementById("sublayerselect").value;
     let filetype = document.getElementById("filetype").value;
     
     await fetch(`http://localhost:8000/download/${feature_id}/${sublayer}/${filetype}/`)
-      .then(response => {
-        // handle the response as needed
-        alert("success")
+      .then(response => response.json())
+      .then(data => {
+        let filename = data.download_trigger;
+
+        filename = filename.replace(/ /g,"_");
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', `/home/killian/Downloads/${filename}.zip`, true);
+        xhr.responseType = 'blob';
+
+        xhr.onload = function(e) {
+        if (this.status == 200) {
+            var blob = new Blob([this.response], {type: 'application/zip'});
+            var downloadLink = document.createElement('a');
+            downloadLink.href = window.URL.createObjectURL(blob);
+            downloadLink.download = `${filename}.zip`;
+            downloadLink.click();
+        }
+        };
+
+        xhr.send();
       })
       .catch(error => {
-        alert("A error occurred")
+        alert("An error occurred");
       });
-}
+  }
