@@ -64,7 +64,17 @@ async function download(){
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+
             fetch('http://192.168.1.150:8765/clear/')
+
+            let filetype = document.getElementById('filetype');
+            filetype.selectedIndex = 0;
+            let folderselect = document.getElementById('folderselect');
+            folderselect.selectedIndex = 0;
+            let featureselect = document.getElementById('featureselect');
+            featureselect.selectedIndex = 0;
+            let sublayerselect = document.getElementById('sublayerselect');
+            sublayerselect.selectedIndex = 0;
         }
         };
 
