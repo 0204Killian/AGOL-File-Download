@@ -2,6 +2,7 @@ from arcgis.gis import GIS
 from pathlib import Path
 import arcgis
 import os
+import shutil
 
 class arcgis_listings:
 
@@ -27,7 +28,7 @@ class arcgis_listings:
     def get_sublayers_names(self, feature_id):
         item = self.gis.content.get(feature_id)
         sublayer_list = []
-        if item.type in ['Feature Service', 'Map Service', 'CSV Collection']:
+        if item.type in ['Feature Service', 'Map Service', 'CSV Collection', 'Shapefile']:
             for layer in item.layers:
                 sublayer_list.append(layer.properties.name)
             return(sublayer_list)
@@ -64,3 +65,12 @@ class arcgis_downloads:
             result = item.export(f'{item.title}', filetype)
             result.download(save_path=downloads_path)
         return stitle
+    
+    def clear_files(self):
+        root_dir = os.getcwd()
+        path = os.path.join(root_dir, "main/static/downloads")
+        try:
+            shutil.rmtree(path)
+        except OSError as e:
+            print("Error: %s : %s" % (path, e.strerror))
+

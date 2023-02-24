@@ -64,6 +64,7 @@ async function download(){
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+            fetch('http://localhost:8000/clear/')
         }
         };
 
