@@ -2,7 +2,7 @@ function updateFeatureDropdown() {
     let folder_id = document.getElementById("folderselect").value;
     let featureDropdown = document.getElementById("featureselect");
     let currentOptions = Array.from(featureDropdown.options).map(option => option.value);
-    fetch(`http://localhost:8000/get_features/${folder_id}`)
+    fetch(`http://192.168.1.150:8765/get_features/${folder_id}`)
         .then(response => response.json())
         .then(data => {
             let newOptions = ['Features', ...data.features];
@@ -29,7 +29,7 @@ function arraysEqual(arr1, arr2) {
 
 function updateSublayerDropdown() {
     let feature_id = document.getElementById("featureselect").value;
-    fetch(`http://localhost:8000/get_sublayers/${feature_id}`)
+    fetch(`http://192.168.1.150:8765/get_sublayers/${feature_id}`)
         .then(response => response.json())
         .then(data => {
             let featureDropdown = document.getElementById("sublayerselect");
@@ -46,7 +46,7 @@ async function download(){
     let sublayer = document.getElementById("sublayerselect").value;
     let filetype = document.getElementById("filetype").value;
     
-    await fetch(`http://localhost:8000/download/${feature_id}/${sublayer}/${filetype}/`)
+    await fetch(`http://192.168.1.150:8765/download/${feature_id}/${sublayer}/${filetype}/`)
       .then(response => response.json())
       .then(data => {
         let filename = data.download_trigger;
