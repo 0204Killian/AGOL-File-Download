@@ -59,12 +59,26 @@ class arcgis_downloads:
         feature_id = arc.get_feature_id(feature_title)
         root_dir = os.getcwd()
         downloads_path = os.path.join(root_dir, "main/static/downloads")
-        o_items = self.gis.content.search(query=f'id: "{feature_id}"')
-        for item in o_items:
-            stitle = item.title
-            result = item.export(f'{item.title}', filetype)
-            result.download(save_path=downloads_path)
-        return stitle
+        items = self.gis.content.get(feature_id)
+
+        if items.type in ['Feature Service', 'Map Service', 'CSV Collection', 'Shapefile', 'GeoPackage']:
+            o_items = self.gis.content.search(query=f'id: "{feature_id}"')
+            for item in o_items:
+                stitle = item.title
+                result = item.export(f'{item.title}', filetype)
+                result.download(save_path=downloads_path)
+            return stitle
+        
+        elif items.type in ['Web Map']:
+            print("Running")
+            print("______________________________")
+            web_map = arcgis.mapping.WebMap(items)
+            layers = web_map.layers
+            for sublayers in layers:
+                print(sublayers)
+                result = sublayers.export(f'{sublayers.title}', filetype)
+                result.download(save_path=downloads_path)
+            return stitle
     
     def clear_files(self):
         root_dir = os.getcwd()
