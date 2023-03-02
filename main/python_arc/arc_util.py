@@ -28,11 +28,11 @@ class arcgis_listings:
     def get_sublayers_names(self, feature_id):
         item = self.gis.content.get(feature_id)
         sublayer_list = []
-        if item.type in ['Feature Service', 'Map Service', 'CSV Collection', 'Shapefile']:
+        if item.type in ['Feature Service', 'Map Service', 'CSV Collection', 'Shapefile', 'Microsoft Excel']:
             for layer in item.layers:
                 sublayer_list.append(layer.properties.name)
             return(sublayer_list)
-        elif item.type in ['Web Map']:
+        elif item.type in ['Web Map', 'Web Mapping Application']:
             web_map = arcgis.mapping.WebMap(item)
             layers = web_map.layers
             for sublayers in layers:
@@ -61,6 +61,7 @@ class arcgis_downloads:
         downloads_path = os.path.join(root_dir, "main/static/downloads")
         items = self.gis.content.get(feature_id)
 
+
         if items.type in ['Feature Service', 'Map Service', 'CSV Collection', 'Shapefile', 'GeoPackage']:
             o_items = self.gis.content.search(query=f'id: "{feature_id}"')
             for item in o_items:
@@ -69,9 +70,7 @@ class arcgis_downloads:
                 result.download(save_path=downloads_path)
             return stitle
         
-        elif items.type in ['Web Map']:
-            print("Running")
-            print("______________________________")
+        elif items.type in ['Web Map','Web Mapping Application']:
             web_map = arcgis.mapping.WebMap(items)
             layers = web_map.layers
             for sublayers in layers:
