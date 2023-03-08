@@ -81,7 +81,7 @@ async function download(){
             link.click();
             document.body.removeChild(link);
 
-            fetch('http://localhost:8000/clear/')
+            //fetch('http://localhost:8000/clear/')
 
             let filetype = document.getElementById('filetype');
             filetype.selectedIndex = 0;

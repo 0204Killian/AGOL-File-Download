@@ -3,6 +3,11 @@ from pathlib import Path
 import arcgis
 import os
 import shutil
+import time
+import geopandas as gpd
+
+
+
 
 class arcgis_listings:
 
@@ -32,7 +37,7 @@ class arcgis_listings:
             for layer in item.layers:
                 sublayer_list.append(layer.properties.name)
             return(sublayer_list)
-        elif item.type in ['Web Map', 'Web Mapping Application']:
+        elif item.type in ['Web Map']:
             web_map = arcgis.mapping.WebMap(item)
             layers = web_map.layers
             for sublayers in layers:
@@ -68,17 +73,26 @@ class arcgis_downloads:
                 stitle = item.title
                 result = item.export(f'{item.title}', filetype)
                 result.download(save_path=downloads_path)
+                if result.type in ['CSV Collection', 'Shapefile', 'GeoPackage']:
+                    result.delete()
+                    time.sleep(5)
             return stitle
         
-        elif items.type in ['Web Map','Web Mapping Application']:
+        elif items.type in ['Web Map']:
             web_map = arcgis.mapping.WebMap(items)
             layers = web_map.layers
             for sublayers in layers:
-                print(sublayers)
-                result = sublayers.export(f'{sublayers.title}', filetype)
-                result.download(save_path=downloads_path)
-            return stitle
-    
+                try:
+                    map_layer = self.gis.content.get(sublayers.itemId)
+                    result = map_layer.export(f'{map_layer.title}', filetype)
+                    result.download(save_path=downloads_path)
+                    if result.type in ['CSV Collection', 'Shapefile', 'GeoPackage']:
+                        result.delete()
+                        time.sleep(5)
+                except Exception as e:
+                    print(f"Error: {e}")
+                    continue
+
     def clear_files(self):
         root_dir = os.getcwd()
         path = os.path.join(root_dir, "main/static/downloads")

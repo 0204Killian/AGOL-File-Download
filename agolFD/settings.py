@@ -11,10 +11,14 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+if os.name == 'nt':
+    os.environ['PATH'] = os.path.join(BASE_DIR, 'C:\\Users\\khogan\\AppData\\Local\\Programs\\Python\\Python310\\Lib\\site-packages\\osgeo') + ';' + os.environ['PATH']
+    os.environ['PROJ_LIB'] = os.path.join(BASE_DIR, 'C:\\Users\\khogan\\AppData\\Local\\Programs\\Python\\Python310\\Lib\\site-packages\\osgeo\\data\\proj') + ';' + os.environ['PATH']
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -38,8 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.auth',
+    'django.contrib.gis',
     'main.apps.MainConfig',
     'main.templatetags.custom_filters',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'agolFD.urls'
@@ -131,3 +138,7 @@ LOGIN_REDIRECT_URL = '/login/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8000',
+]
