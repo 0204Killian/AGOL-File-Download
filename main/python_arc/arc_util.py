@@ -1,10 +1,9 @@
 from arcgis.gis import GIS
-from pathlib import Path
 import arcgis
 import os
 import shutil
 import time
-import geopandas as gpd
+import re
 
 
 
@@ -33,7 +32,7 @@ class arcgis_listings:
     def get_sublayers_names(self, feature_id):
         item = self.gis.content.get(feature_id)
         sublayer_list = []
-        if item.type in ['Feature Service', 'Map Service', 'CSV Collection', 'Shapefile', 'Microsoft Excel']:
+        if item.type in ['Feature Service', 'Map Service','Service Definition', 'CSV Collection', 'Shapefile', 'Microsoft Excel']:
             for layer in item.layers:
                 sublayer_list.append(layer.properties.name)
             return(sublayer_list)
@@ -52,7 +51,7 @@ class arcgis_listings:
     def get_feature_id(self, feature_title):
         search_result = self.gis.content.search(query=f'title: "{feature_title}"')
         return search_result[0].id
-    
+
     def get_feature_type(self, layer_name):
         layer = self.get_feature_id(layer_name)
         layer_obj = self.gis.content.get(layer)
@@ -67,7 +66,13 @@ class arcgis_downloads:
 
     def download_file(self, feature_title, sublayer, filetype):
         arc = arcgis_listings()
-        feature_id = arc.get_feature_id(feature_title)
+        try:
+            print(feature_title)
+            result = re.match(r'^(.*?)::', feature_title).group(1)
+            feature_id = arc.get_feature_id(result)
+        except Exception as e:
+            print(e)
+
         root_dir = os.getcwd()
         downloads_path = os.path.join(root_dir, "main/static/downloads")
         items = self.gis.content.get(feature_id)
