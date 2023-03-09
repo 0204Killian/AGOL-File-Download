@@ -52,6 +52,12 @@ class arcgis_listings:
     def get_feature_id(self, feature_title):
         search_result = self.gis.content.search(query=f'title: "{feature_title}"')
         return search_result[0].id
+    
+    def get_feature_type(self, layer_name):
+        layer = self.get_feature_id(layer_name)
+        layer_obj = self.gis.content.get(layer)
+        return layer_obj.type
+
 
 class arcgis_downloads:
     username = 'praveenmp'

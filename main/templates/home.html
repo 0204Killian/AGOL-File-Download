@@ -53,7 +53,7 @@
             </div>
             <br/>
             <div class="form-component">
-                <label for="sublayerselect">Select a sublayer </label>
+                <label for="sublayerselect" id="sublayerselectlabel">Select a sublayer </label>
                 <select name="sublayerselect" id="sublayerselect" class="dropdownlist">
                     <option class="dummy-option">Sublayers</option>
                     {% for sublayer in sublayers %}
@@ -73,7 +73,42 @@
         <!-- need to get rid of the div the button was in so I could center the button -->
         <!-- changed inner html to submit since the h1's inner HTML has Download-->
         <button class="download-button" type="button" onclick="download()">Download</button> 
+    
+
+    <div class="colourtable">
+     <table>
+        <thead>
+          <tr>
+            <th style="padding: 5px;">Feature Type</th>
+            <th style="padding: 5px;">Color</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Feature Service</td>
+            <td style="background-color: lightblue;"></td>
+          </tr>
+          <tr>
+            <td>Web Map</td>
+            <td style="background-color: lightgreen;"></td>
+          </tr>
+          <tr>
+            <td>Web Mapping Application</td>
+            <td style="background-color: lightpink;"></td>
+          </tr>
+          <tr>
+            <td>Service Definition</td>
+            <td style="background-color: lightgrey;"></td>
+          </tr>
+          <tr>
+            <td>Microsoft Excel</td>
+            <td style="background-color: green;"></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+</div>
+      
 </main>
 
 <script src="{% static 'js/home.js' %}"></script>

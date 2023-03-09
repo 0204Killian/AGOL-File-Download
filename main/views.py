@@ -20,8 +20,12 @@ def list_folders(req):
 
 def get_features(request, folder_id):
     folder = folders.objects.get(id=folder_id)
+    arc = arcgis_listings()
     feature_names = folder.get_feature_names()
-    context = {'features': feature_names}
+    feature_type_list = []
+    for features in feature_names:
+        feature_type_list.append(arc.get_feature_type(features))
+    context = {'features': feature_names, 'feature_type': feature_type_list}
     return JsonResponse(context)
 
 def get_sublayers(request, feature_title):
