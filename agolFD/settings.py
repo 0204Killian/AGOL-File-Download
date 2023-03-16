@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-0*1ezlkjk9!jiz)r(i&y##^!z&o$*lt_6o^6d&5ook)*2@h)sp
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.150']
 
 
 # Application definition
@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     'main.apps.MainConfig',
     'main.templatetags.custom_filters',
-    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +55,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'agolFD.urls'

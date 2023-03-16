@@ -37,11 +37,7 @@ class arcgis_listings:
                 sublayer_list.append(layer.properties.name)
             return(sublayer_list)
         elif item.type in ['Web Map']:
-            web_map = arcgis.mapping.WebMap(item)
-            layers = web_map.layers
-            for sublayers in layers:
-                sublayer_list.append(sublayers.title)
-            return(sublayer_list)
+            pass
         else:
             print("______________________________")
             print("ERROR")
@@ -74,11 +70,11 @@ class arcgis_downloads:
             print(e)
 
         root_dir = os.getcwd()
-        downloads_path = os.path.join(root_dir, "main/static/downloads")
         items = self.gis.content.get(feature_id)
 
 
         if items.type in ['Feature Service', 'Map Service', 'CSV Collection', 'Shapefile', 'GeoPackage']:
+            downloads_path = os.path.join(root_dir, "main/static/downloads")
             o_items = self.gis.content.search(query=f'id: "{feature_id}"')
             for item in o_items:
                 stitle = item.title
@@ -90,6 +86,9 @@ class arcgis_downloads:
             return stitle
         
         elif items.type in ['Web Map']:
+            feature_name = re.match(r'^(.*?)::', feature_title).group(1)
+            feature_name = feature_name.replace(" ", "_")
+            downloads_path = os.path.join(root_dir, f"main/static/downloads/{feature_name}")
             web_map = arcgis.mapping.WebMap(items)
             layers = web_map.layers
             for sublayers in layers:
@@ -99,10 +98,12 @@ class arcgis_downloads:
                     result.download(save_path=downloads_path)
                     if result.type in ['CSV Collection', 'Shapefile', 'GeoPackage']:
                         result.delete()
-                        time.sleep(5)
+                        time.sleep(1)
                 except Exception as e:
                     print(f"Error: {e}")
                     continue
+            shutil.make_archive(downloads_path, 'zip', downloads_path)
+            return feature_name
 
     def clear_files(self):
         root_dir = os.getcwd()

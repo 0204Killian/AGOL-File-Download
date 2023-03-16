@@ -3,7 +3,7 @@ function updateFeatureDropdown() {
     let folder_id = document.getElementById("folderselect").value;
     let featureDropdown = document.getElementById("featureselect");
     let currentOptions = Array.from(featureDropdown.options).map(option => option.value);
-    fetch(`http://localhost:8000/get_features/${folder_id}`)
+    fetch(`http://192.168.1.150:8765/get_features/${folder_id}`)
     .then(response => response.json())
     .then(data => {
         let newOptions = ['Features', ...data.features];
@@ -88,7 +88,7 @@ function updateSublayerDropdown() {
         featureDropdownlabel.hidden = false
     }
 
-    fetch(`http://localhost:8000/get_sublayers/${featureName}`)
+    fetch(`http://192.168.1.150:8765/get_sublayers/${featureName}`)
         .then(response => response.json())
         .then(data => {
             let featureDropdown = document.getElementById("sublayerselect");
@@ -100,61 +100,127 @@ function updateSublayerDropdown() {
         });
 }
 
+function loadcircleOn(){
+    let dlb = document.getElementById("download-button")
+    let loadcircle = document.createElement("div");
+    loadcircle.setAttribute('id','loader')
+    loadcircle.setAttribute('height','5px')
+    loadcircle.setAttribute('width','5px')
+    dlb.appendChild(loadcircle);
+}
+
+function loadcircleOff(){
+    let loadcircle = document.getElementById("loader")
+    loadcircle.remove()
+}
+
 async function download(){
     let feature_id = document.getElementById("featureselect").value;
     let sublayer = document.getElementById("sublayerselect").value;
     let filetype = document.getElementById("filetype").value;
-    
-    await fetch(`http://localhost:8000/download/${feature_id}/${sublayer}/${filetype}/`)
-      .then(response => response.json())
-      .then(data => {
-        let filename = data.download_trigger;
 
-        filename = filename.replace(/ /g,"_");
-        let filetyped = document.getElementById('filetype');
+    let featureType = /(?<=::).*/.exec(feature_id)[0];
 
-        var xhr = new XMLHttpRequest();
-        
-        if(filetyped.value == 'GeoPackage'){
-            xhr.open('GET', '/static/downloads/' + filename + '.gpkg', true)
-        }else{
-            xhr.open('GET', '/static/downloads/' + filename + '.zip', true);
-        }
-        xhr.responseType = 'blob';
+    if (featureType == 'Web Map') {
+        await fetch(`http://192.168.1.150:8765/download/${feature_id}/${filetype}/`)
+        .then(response => response.json())
+        .then(data => {
+            let filename = data.download_trigger;
 
-        xhr.onload = function() {
-            if(filetyped.value == 'GeoPackage'){
-                var blob = new Blob([xhr.response], {type: 'application/geopackage'});
-                filename += '.gpkg';
-            }else{
+            filename = filename.replace(/ /g,"_");
+            let filetyped = document.getElementById('filetype');
+
+            var xhr = new XMLHttpRequest();
+            
+                xhr.open('GET', '/static/downloads/' + filename + '.zip', true);
+
+            xhr.responseType = 'blob';
+
+            xhr.onload = function() {
                 var blob = new Blob([xhr.response], {type: 'application/zip'});
                 filename += '.zip';
+        
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                fetch('http://192.168.1.150:8765/clear/')
+
+                let filetype = document.getElementById('filetype');
+                filetype.selectedIndex = 0;
+                let folderselect = document.getElementById('folderselect');
+                folderselect.selectedIndex = 0;
+                let featureselect = document.getElementById('featureselect');
+                featureselect.selectedIndex = 0;
+                let sublayerselect = document.getElementById('sublayerselect');
+                sublayerselect.selectedIndex = 0;
+                loadcircleOff()
+            };
+            xhr.send();
+        })
+        .catch(error => {
+            alert(error);
+            loadcircleOff();
+        });
+    }
+
+    else {
+        await fetch(`http://192.168.1.150:8765/download/${feature_id}/${sublayer}/${filetype}/`)
+        .then(response => response.json())
+        .then(data => {
+            let filename = data.download_trigger;
+
+            filename = filename.replace(/ /g,"_");
+            let filetyped = document.getElementById('filetype');
+
+            var xhr = new XMLHttpRequest();
+            
+            if(filetyped.value == 'GeoPackage'){
+                xhr.open('GET', '/static/downloads/' + filename + '.gpkg', true)
+            }else{
+                xhr.open('GET', '/static/downloads/' + filename + '.zip', true);
             }
-    
-            var link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
-            link.download = filename;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            xhr.responseType = 'blob';
 
-            fetch('http://localhost:8000/clear/')
+            xhr.onload = function() {
+                if(filetyped.value == 'GeoPackage'){
+                    var blob = new Blob([xhr.response], {type: 'application/geopackage'});
+                    filename += '.gpkg';
+                }else{
+                    var blob = new Blob([xhr.response], {type: 'application/zip'});
+                    filename += '.zip';
+                }
+        
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
 
-            let filetype = document.getElementById('filetype');
-            filetype.selectedIndex = 0;
-            let folderselect = document.getElementById('folderselect');
-            folderselect.selectedIndex = 0;
-            let featureselect = document.getElementById('featureselect');
-            featureselect.selectedIndex = 0;
-            let sublayerselect = document.getElementById('sublayerselect');
-            sublayerselect.selectedIndex = 0;
-        };
-        xhr.send();
-      })
-      .catch(error => {
-        alert(error);
-      });
-  }
+                fetch('http://192.168.1.150:8765/clear/')
+
+                let filetype = document.getElementById('filetype');
+                filetype.selectedIndex = 0;
+                let folderselect = document.getElementById('folderselect');
+                folderselect.selectedIndex = 0;
+                let featureselect = document.getElementById('featureselect');
+                featureselect.selectedIndex = 0;
+                let sublayerselect = document.getElementById('sublayerselect');
+                sublayerselect.selectedIndex = 0;
+                loadcircleOff()
+            };
+            xhr.send();
+        })
+        .catch(error => {
+            alert(error);
+            loadcircleOff();
+        });
+    }
+}
 
   function dropdownReset(){
     layer = document.getElementById('featureselect')

@@ -41,6 +41,13 @@ def download(request, feature_title, sublayer, filetype):
     response_data = {'download_trigger': download_trigger}
     return HttpResponse(json.dumps(response_data), content_type='application/json')
 
+def download_webmap(request, feature_title, filetype):
+    arc = arcgis_downloads()
+    sublayer = ""
+    download_trigger = arc.download_file(feature_title, sublayer, filetype)
+    response_data = {'download_trigger': download_trigger}
+    return HttpResponse(json.dumps(response_data), content_type='application/json')
+
 def clear(request):
     arc = arcgis_downloads()
     arc.clear_files()
